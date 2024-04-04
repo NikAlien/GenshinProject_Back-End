@@ -17,8 +17,15 @@ public class DataBaseLoad implements CommandLineRunner {
 
 
     @Override
-    public void run(String... strings) throws Exception{
-        this.repository.save(new Character(1, "raz", 10, "electro","wolf"));
-        this.repository.save(new Character(2, "ben", 20, "pyro" ,"no"));
+    public void run(String... strings) {
+        this.repository.save(new Character(1, "Razor", 90, "electro","Wolvendom"));
+        this.repository.save(new Character(2, "Bennett", 87, "pyro" ,"Adventurers' Guild"));
+        this.repository.save(new Character(3, "Kaeya", 57, "cryo","Knights of Favonius"));
+        this.repository.save(new Character(4, "Xianyun", 80, "anemo" ,"Mt. Aocang"));
+        this.repository.save(new Character(5, "Cyno", 90, "electro","Temple of Silence"));
+        this.repository.save(new Character(6, "Tighnari", 40, "dendro" ,"Gandharva Ville"));
+        this.repository.save(new Character(7, "Baizhu", 87, "dendro","Bubu Pharmacy"));
+        this.repository.save(new Character(8, "Xingqiu", 70, "hydro" ,"Feiyun Commerce Guild"));
+
     }
 }
