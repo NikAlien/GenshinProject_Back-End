@@ -36,7 +36,7 @@ public class CharacterService {
         if(!error.isEmpty())
             throw new Exception(error);
 
-        if(!repo.findById(newChara.getId()).isPresent())
+        if(repo.findById(newChara.getId()).isPresent())
             throw new Exception("Character already in repo present");
 
         repo.save(newChara);
@@ -55,8 +55,8 @@ public class CharacterService {
 
     public void deleteCharacterById(Integer id) throws Exception {
 
-        if(!repo.findById(id).isEmpty())
-            throw new Exception("Character already in repo present");
+        if(repo.findById(id).isEmpty())
+            throw new Exception("Character not in repo");
 
         repo.deleteById(id);
     }
