@@ -6,10 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +31,45 @@ public class CharacterController {
         return new ResponseEntity<>(service.getCharacterById(id), HttpStatus.OK);
     }
 
+
     //     Inserting new Character     //
+    @PostMapping("/insert")
+    public ResponseEntity<String> insertNewCharacter(@RequestBody Character newChara) {
+
+        try {
+            service.addNewCharacter(newChara);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error at inserting element -> " + e.getMessage(), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("New character added successfully", HttpStatus.OK);
+    }
 
 
+    //     Updating Character     //
+    @PutMapping("/update_{id}")
+    public ResponseEntity<String> updateCharacter(@RequestBody Character newChara, @PathVariable(name = "id") Integer id) {
+
+        if(!id.equals(newChara.getId())) {
+            return new ResponseEntity<>("Error at updating element: the ids don't match ", HttpStatus.CONFLICT);
+        }
+
+        try {
+            service.updateCharacter(newChara);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error at updating element -> " + e.getMessage(), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("Character updated successfully", HttpStatus.OK);
+    }
+
+
+    //     Deleting Character     //
+    @DeleteMapping("/delete_{id}")
+    public ResponseEntity<String> deleteCharacter(@PathVariable(name = "id") Integer id) {
+        try {
+            service.deleteCharacterById(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error at deleting element -> " + e.getMessage(), HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<>("Character deleted successfully", HttpStatus.OK);
+    }
 }

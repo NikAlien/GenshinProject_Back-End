@@ -23,6 +23,7 @@ public class Character {
         this.id = id;
         this.name = name;
         this.vision = vis;
+        this.currentLevel = lvl;
         this.affiliation = aff;
     }
 }
