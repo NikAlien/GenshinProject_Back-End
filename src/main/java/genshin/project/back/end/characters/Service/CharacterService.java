@@ -31,15 +31,50 @@ public class CharacterService {
 
     //    Create, Update & Delete  Character     //
 
-    public void addNewCharacter(Character newChara) {
+    public void addNewCharacter(Character newChara) throws Exception{
+        String error = this.validateCharacter(newChara);
+        if(!error.isEmpty())
+            throw new Exception(error);
+
+        if(!repo.findById(newChara.getId()).isPresent())
+            throw new Exception("Character already in repo present");
+
         repo.save(newChara);
     }
 
-    public void updateCharacter(Character chara) {
+    public void updateCharacter(Character chara) throws Exception {
+        String error = this.validateCharacter(chara);
+        if(!error.isEmpty())
+            throw new Exception(error);
+
+        if(repo.findById(chara.getId()).isEmpty())
+            throw new Exception("Character not in repo");
+
         repo.save(chara);
     }
 
-    public void deleteCharacterById(Integer id) {
+    public void deleteCharacterById(Integer id) throws Exception {
+
+        if(!repo.findById(id).isEmpty())
+            throw new Exception("Character already in repo present");
+
         repo.deleteById(id);
+    }
+
+
+    //     Validate Character     //
+    public String validateCharacter(Character chara) {
+        String finalError = "";
+
+        if(chara.getId() < 1)
+            finalError += "Invalid id: ";
+
+        if(chara.getName().isEmpty() || chara.getAffiliation().isEmpty() || chara.getVision().isEmpty())
+            finalError += "Empty filds, please fill them up; ";
+
+        if(chara.getCurrentLevel() < 0 || chara.getCurrentLevel() > 90)
+            finalError += "Invalid level inserted; ";
+
+        return finalError;
     }
 }
