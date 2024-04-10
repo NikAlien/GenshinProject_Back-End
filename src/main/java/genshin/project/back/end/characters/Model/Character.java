@@ -8,13 +8,14 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class Character {
 
-    private @Id Integer id;
+    public static int lastId = 8;
+    private @Id int id;
     private String name;
-    private Integer currentLevel;
+    private int currentLevel;
     private String vision;
     private String affiliation;
 

@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import static genshin.project.back.end.characters.Model.Character.lastId;
 
 @Service
 @AllArgsConstructor
@@ -25,13 +28,25 @@ public class CharacterService {
         return result;
     }
 
+    public List<Character> getPaginationCharacters(List<Character> characters, int page, int number) {
+        int start = number * (page - 1);
+        int end = number * page;
+        if(start < 0)
+            start = 0;
+        if(number * page > characters.size())
+            end = characters.size();
+        return characters.subList(start, end);
+    }
+
     public Optional<Character> getCharacterById(Integer id) {
         return repo.findById(id);
     }
 
     //    Create, Update & Delete  Character     //
 
-    public void addNewCharacter(Character newChara) throws Exception{
+    public int addNewCharacter(Character newChara) throws Exception{
+        lastId++;
+        newChara.setId(lastId);
         String error = this.validateCharacter(newChara);
         if(!error.isEmpty())
             throw new Exception(error);
@@ -40,9 +55,10 @@ public class CharacterService {
             throw new Exception("Character already in repo present");
 
         repo.save(newChara);
+        return newChara.getId();
     }
 
-    public void updateCharacter(Character chara) throws Exception {
+    public int updateCharacter(Character chara) throws Exception {
         String error = this.validateCharacter(chara);
         if(!error.isEmpty())
             throw new Exception(error);
@@ -51,14 +67,16 @@ public class CharacterService {
             throw new Exception("Character not in repo");
 
         repo.save(chara);
+        return chara.getId();
     }
 
-    public void deleteCharacterById(Integer id) throws Exception {
+    public boolean deleteCharacterById(Integer id) throws Exception {
 
         if(repo.findById(id).isEmpty())
             throw new Exception("Character not in repo");
 
         repo.deleteById(id);
+        return true;
     }
 
 
