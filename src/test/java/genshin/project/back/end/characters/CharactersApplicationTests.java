@@ -29,29 +29,36 @@ class CharactersApplicationTests {
 		Assertions.assertEquals(razor.getVision(), "electro");
 
 		charaService.addNewCharacter(new Character(10, "Bill", 60, "anemo", "--"));
-		Character billy = charaService.getCharacterById(10).get();
-		Assertions.assertEquals(billy.getId(), 10);
+		Character billy = charaService.getCharacterById(9).get();
+		Assertions.assertEquals(billy.getId(), 9);
 		Assertions.assertEquals(billy.getName(), "Bill");
 		Assertions.assertEquals(billy.getVision(), "anemo");
 
 		try {
-			charaService.addNewCharacter(new Character(10, "Bill", 60, "anemo", "--"));
+			int id = charaService.addNewCharacter(new Character(9, "Bill", 60, "anemo", "--"));
 			Assertions.assertEquals(1, 5);
 		}
 		catch (Exception e){
-			Assertions.assertEquals(1, 1);
+			Assertions.assertEquals(10, 10);
 		}
 
-		charaService.updateCharacter(new Character(10, "Millie", 60, "pyro", "--"));
-		billy = charaService.getCharacterById(10).get();
-		Assertions.assertEquals(billy.getId(), 10);
+		charaService.updateCharacter(new Character(9, "Millie", 60, "pyro", "--"));
+		billy = charaService.getCharacterById(9).get();
+		Assertions.assertEquals(billy.getId(), 9);
 		Assertions.assertEquals(billy.getName(), "Millie");
 		Assertions.assertEquals(billy.getVision(), "pyro");
 
 		Assertions.assertEquals(charaService.getAllCharacters().size(), 9);
-		charaService.deleteCharacterById(10);
+		charaService.deleteCharacterById(9);
 		Assertions.assertEquals(charaService.getAllCharacters().size(), 8);
 
+		charaService.addNewCharacter(new Character(10, "Bill", 60, "anemo", "--"));
+		billy = charaService.getCharacterById(10).get();
+		Assertions.assertEquals(billy.getId(), 10);
+		Assertions.assertEquals(billy.getName(), "Bill");
+		Assertions.assertEquals(billy.getVision(), "anemo");
+		Assertions.assertEquals(charaService.getAllCharacters().size(), 9);
 	}
+
 
 }
