@@ -1,7 +1,7 @@
-## Back End in Java Spring, created for my GenshinProject Front-End
+# Back End in Java Spring, created for my GenshinProject Front-End
 
-# Work in Progress ....
-# More features TBA
+** Work in Progress .... **
+** More features TBA **
 
 Currently, it has in-memory data to work with, on localhost
 Implemented:
