@@ -1,4 +1,4 @@
-## Back End in Java Spring, created for my GenshinProject Front-End
+## Back End in Java Spring, created for my [GenshinProject Front-End](https://github.com/NikAlien/GenshinProject)
 
 **Work in Progress ....** <br>
 **More features TBA**
