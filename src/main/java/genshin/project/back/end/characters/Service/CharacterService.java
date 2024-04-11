@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static genshin.project.back.end.characters.Model.Character.lastId;
 
@@ -40,6 +38,20 @@ public class CharacterService {
 
     public Optional<Character> getCharacterById(Integer id) {
         return repo.findById(id);
+    }
+
+    //    Get sorted list     //
+
+    public List<Character> getSortedListByLevel() {
+        return this.getAllCharacters().stream()
+                .sorted(Comparator.comparingInt(Character::getCurrentLevel).reversed())
+                .collect(Collectors.toList());
+    }
+
+    public List<Character> getSortedListByName() {
+        return this.getAllCharacters().stream()
+                .sorted(Comparator.comparing(Character::getName))
+                .collect(Collectors.toList());
     }
 
     //    Create, Update & Delete  Character     //
