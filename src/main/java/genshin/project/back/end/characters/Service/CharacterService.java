@@ -54,6 +54,15 @@ public class CharacterService {
                 .collect(Collectors.toList());
     }
 
+    //    Get filtered list     //
+
+    public List<Character> getFilteredListByVision(String vision) {
+        return this.getAllCharacters().stream()
+                .filter(character -> character.getVision().equals(vision))
+                .collect(Collectors.toList());
+    }
+
+
     //    Create, Update & Delete  Character     //
 
     public int addNewCharacter(Character newChara) throws Exception{

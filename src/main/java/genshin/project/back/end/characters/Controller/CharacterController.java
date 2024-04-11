@@ -42,6 +42,11 @@ public class CharacterController {
         return new ResponseEntity<>(service.getPaginationCharacters(service.getSortedListByName(), page, number), HttpStatus.OK);
     }
 
+    @GetMapping("/filtered/byVision/{vision}")
+    public ResponseEntity<List<Character>> getFilteredByVisionCharacters(@PathVariable(name = "vision") String vision){
+        return new ResponseEntity<>(service.getFilteredListByVision(vision), HttpStatus.OK);
+    }
+
     @GetMapping("/id_{id}")
     public ResponseEntity<Optional<Character>> getCharacterById(@PathVariable(name = "id") Integer id) {
         return new ResponseEntity<>(service.getCharacterById(id), HttpStatus.OK);
