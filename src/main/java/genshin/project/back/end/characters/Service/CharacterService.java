@@ -63,6 +63,21 @@ public class CharacterService {
     }
 
 
+    //     Get necessary chart data     //
+
+    public List<Integer> getChartData(){
+        List<Integer> dataList = new ArrayList<>(7);
+        dataList.add(this.getFilteredListByVision("anemo").size());
+        dataList.add(this.getFilteredListByVision("cryo").size());
+        dataList.add(this.getFilteredListByVision("dendro").size());
+        dataList.add(this.getFilteredListByVision("electro").size());
+        dataList.add(this.getFilteredListByVision("geo").size());
+        dataList.add(this.getFilteredListByVision("hydro").size());
+        dataList.add(this.getFilteredListByVision("pyro").size());
+        return dataList;
+    }
+
+
     //    Create, Update & Delete  Character     //
 
     public int addNewCharacter(Character newChara) throws Exception{
