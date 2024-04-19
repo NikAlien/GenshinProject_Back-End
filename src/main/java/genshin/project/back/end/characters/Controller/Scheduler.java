@@ -14,7 +14,7 @@ public class Scheduler {
 
     @Scheduled(fixedRate = 5000)
     public void addNewCharactersToRepo() throws Exception {
-        Character newChara = CharacterFaker.createFakeCharacter();
-        service.addNewCharacter(newChara);
+//        Character newChara = CharacterFaker.createFakeCharacter();
+//        service.addNewCharacter(newChara);
     }
 }

@@ -1,6 +1,7 @@
 package genshin.project.back.end.characters.Repository;
 
 import genshin.project.back.end.characters.Model.Character;
+import genshin.project.back.end.characters.Model.Weapon;
 
 import java.util.List;
 import java.util.Random;
@@ -17,7 +18,7 @@ public class CharacterFaker {
 
 
     public static Character createFakeCharacter() {
-        return new Character(-1, names.get(rand.nextInt(names.size())),
+        return new Character( names.get(rand.nextInt(names.size())),
                 rand.nextInt(91),
                 visions.get(rand.nextInt(visions.size())),
                 affiliations.get(rand.nextInt(affiliations.size())));

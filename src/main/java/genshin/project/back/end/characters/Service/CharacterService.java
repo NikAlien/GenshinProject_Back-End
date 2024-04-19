@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static genshin.project.back.end.characters.Model.Character.lastId;
 
 @Service
 @AllArgsConstructor
@@ -81,17 +80,15 @@ public class CharacterService {
     //    Create, Update & Delete  Character     //
 
     public int addNewCharacter(Character newChara) throws Exception{
-        lastId++;
-        newChara.setId(lastId);
         String error = this.validateCharacter(newChara);
         if(!error.isEmpty())
             throw new Exception(error);
 
-        if(repo.findById(newChara.getId()).isPresent())
+        if(repo.findById(newChara.getCharacterId()).isPresent())
             throw new Exception("Character already in repo present");
 
         repo.save(newChara);
-        return newChara.getId();
+        return newChara.getCharacterId();
     }
 
     public int updateCharacter(Character chara) throws Exception {
@@ -99,11 +96,11 @@ public class CharacterService {
         if(!error.isEmpty())
             throw new Exception(error);
 
-        if(repo.findById(chara.getId()).isEmpty())
+        if(repo.findById(chara.getCharacterId()).isEmpty())
             throw new Exception("Character not in repo");
 
         repo.save(chara);
-        return chara.getId();
+        return chara.getCharacterId();
     }
 
     public boolean deleteCharacterById(Integer id) throws Exception {
@@ -120,8 +117,6 @@ public class CharacterService {
     public String validateCharacter(Character chara) {
         String finalError = "";
 
-        if(chara.getId() < 1)
-            finalError += "Invalid id: ";
 
         if(chara.getName().isEmpty() || chara.getAffiliation().isEmpty() || chara.getVision().isEmpty())
             finalError += "Empty filds, please fill them up; ";

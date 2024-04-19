@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,7 +80,7 @@ public class CharacterController {
     @PutMapping("/update_{id}")
     public int updateCharacter( @PathVariable(name = "id") Integer id, @RequestBody Character newChara) {
 
-        if(!id.equals(newChara.getId())) {
+        if(!id.equals(newChara.getCharacterId())) {
             return -1;
         }
 
@@ -98,5 +100,11 @@ public class CharacterController {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @MessageMapping("/characters/chat")
+    @SendTo("/characters")
+    public int onReceiveMessage() {
+        return this.getSizeRepo();
     }
 }
