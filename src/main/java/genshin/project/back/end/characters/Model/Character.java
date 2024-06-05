@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @Table(name = "Characters")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Character {
 
@@ -23,6 +24,10 @@ public class Character {
     @JoinColumn(name = "weaponId")
     private Weapon weapon;
 
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
     public Character(String name, int lvl, String vis, String aff) {
         this.name = name;
         this.vision = vis;
@@ -31,11 +36,12 @@ public class Character {
         this.weapon = null;
     }
 
-    public Character(String name, int lvl, String vis, String aff, Weapon weapon) {
+    public Character(String name, int lvl, String vis, String aff, Weapon weapon, User user) {
         this.name = name;
         this.vision = vis;
         this.currentLevel = lvl;
         this.affiliation = aff;
         this.weapon = weapon;
+        this.user = user;
     }
 }
