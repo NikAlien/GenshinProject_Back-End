@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 @AllArgsConstructor
 
 public class UserController {
@@ -30,9 +30,19 @@ public class UserController {
         return new ResponseEntity<>(service.getAllUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/userID")
-    public ResponseEntity<Optional<Integer>> getUserID(@RequestParam String userName, @RequestParam String userPassword){
+    @GetMapping("/userID/{userName}")
+    public ResponseEntity<Integer> getUserID(@PathVariable(name = "userName") String userName, @RequestParam String userPassword){
         return new ResponseEntity<>(service.getUserID(userName, userPassword), HttpStatus.OK);
+    }
+
+    //     Inserting new Character     //
+    @PostMapping("/insert")
+    public int insertNewCharacter(@RequestBody User newUser) {
+        try {
+            return service.addNewUser(newUser);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
 }
