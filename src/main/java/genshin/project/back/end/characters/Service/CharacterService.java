@@ -2,6 +2,7 @@ package genshin.project.back.end.characters.Service;
 
 import genshin.project.back.end.characters.Model.Character;
 import genshin.project.back.end.characters.Repository.CharactersRepository;
+import genshin.project.back.end.characters.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +18,16 @@ public class CharacterService {
     @Autowired
     private CharactersRepository repo;
 
+    @Autowired
+    private UserRepository userRepo;
+
     //    Get all or only one entity     //
 
-    public List<Character> getAllCharacters() {
+    public List<Character> getAllCharacters(int UserId) {
+        return new ArrayList<>(repo.findCharactersByUser(userRepo.findById(UserId).get()));
+    }
+
+    public List<Character> getAllCharactersCopy() {
         List<Character> result = new ArrayList<>();
         repo.findAll().forEach(result::add);
         return result;
@@ -41,14 +49,14 @@ public class CharacterService {
 
     //    Get sorted list     //
 
-    public List<Character> getSortedListByLevel() {
-        return this.getAllCharacters().stream()
+    public List<Character> getSortedListByLevel(int userId) {
+        return this.getAllCharacters(userId).stream()
                 .sorted(Comparator.comparingInt(Character::getCurrentLevel).reversed())
                 .collect(Collectors.toList());
     }
 
     public List<Character> getSortedListByName() {
-        return this.getAllCharacters().stream()
+        return this.getAllCharactersCopy().stream()
                 .sorted(Comparator.comparing(Character::getName))
                 .collect(Collectors.toList());
     }
@@ -56,7 +64,7 @@ public class CharacterService {
     //    Get filtered list     //
 
     public List<Character> getFilteredListByVision(String vision) {
-        return this.getAllCharacters().stream()
+        return this.getAllCharactersCopy().stream()
                 .filter(character -> character.getVision().equals(vision))
                 .collect(Collectors.toList());
     }
@@ -79,7 +87,7 @@ public class CharacterService {
 
     //    Create, Update & Delete  Character     //
 
-    public int addNewCharacter(Character newChara) throws Exception{
+    public int addNewCharacter(Character newChara, int UserId) throws Exception{
         String error = this.validateCharacter(newChara);
         if(!error.isEmpty())
             throw new Exception(error);
@@ -87,8 +95,9 @@ public class CharacterService {
         if(repo.findById(newChara.getCharacterId()).isPresent())
             throw new Exception("Character already in repo present");
 
-        repo.save(newChara);
-        return newChara.getCharacterId();
+        newChara.setUser(userRepo.findById(UserId).get());
+        Character chara = repo.save(newChara);
+        return chara.getCharacterId();
     }
 
     public int updateCharacter(Character chara) throws Exception {

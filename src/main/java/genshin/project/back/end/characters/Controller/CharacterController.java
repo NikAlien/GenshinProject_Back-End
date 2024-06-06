@@ -26,17 +26,17 @@ public class CharacterController {
     //    Get all or only one entity     //
     @GetMapping
     public ResponseEntity<List<Character>> getAllCharacters(){
-        return new ResponseEntity<>(service.getAllCharacters(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllCharactersCopy(), HttpStatus.OK);
     }
 
     @GetMapping("/page_{page}")
-    public ResponseEntity<List<Character>> getPageCharacters(@PathVariable(name = "page") int page, @RequestParam int number){
-        return new ResponseEntity<>(service.getPaginationCharacters(service.getAllCharacters(), page, number), HttpStatus.OK);
+    public ResponseEntity<List<Character>> getPageCharacters(@PathVariable(name = "page") int page, @RequestParam int number, @RequestParam int userId){
+        return new ResponseEntity<>(service.getPaginationCharacters(service.getAllCharacters(userId), page, number), HttpStatus.OK);
     }
 
     @GetMapping("/page/sorted/byLevel_{page}")
-    public ResponseEntity<List<Character>> getPageSortedByLevelCharacters(@PathVariable(name = "page") int page, @RequestParam int number){
-        return new ResponseEntity<>(service.getPaginationCharacters(service.getSortedListByLevel(), page, number), HttpStatus.OK);
+    public ResponseEntity<List<Character>> getPageSortedByLevelCharacters(@PathVariable(name = "page") int page, @RequestParam int number, @RequestParam int userId){
+        return new ResponseEntity<>(service.getPaginationCharacters(service.getSortedListByLevel(userId), page, number), HttpStatus.OK);
     }
 
     @GetMapping("/page/sorted/byName_{page}")
@@ -60,16 +60,16 @@ public class CharacterController {
     }
 
     @GetMapping("/size")
-    public int getSizeRepo(){
-        return service.getAllCharacters().size();
+    public int getSizeRepo(@RequestParam int userId){
+        return service.getAllCharacters(userId).size();
     }
 
 
     //     Inserting new Character     //
     @PostMapping("/insert")
-    public int insertNewCharacter(@RequestBody Character newChara) {
+    public int insertNewCharacter(@RequestBody Character newChara, @RequestParam int userId) {
         try {
-            return service.addNewCharacter(newChara);
+            return service.addNewCharacter(newChara, userId);
         } catch (Exception e) {
             return -1;
         }
@@ -102,9 +102,9 @@ public class CharacterController {
         }
     }
 
-    @MessageMapping("/characters/chat")
-    @SendTo("/characters")
-    public int onReceiveMessage() {
-        return this.getSizeRepo();
-    }
+//    @MessageMapping("/characters/chat")
+//    @SendTo("/characters")
+//    public int onReceiveMessage() {
+//        return this.getSizeRepo();
+//    }
 }
